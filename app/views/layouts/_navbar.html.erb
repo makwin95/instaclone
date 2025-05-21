@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Navbar Toggle Fix</title>
+  <!-- Bootstrap CSS -->
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" />
+</head>
+<body>
+
+<nav class="navbar navbar-light bg-light position-relative">
+  <a class="navbar-brand" href="/">Home</a>
+
+  <div class="d-flex align-items-start position-relative">
+    <button class="navbar-toggler" id="menuToggleBtn" type="button">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+
+    <div class="collapse position-absolute" id="navbarSupportedContent_unique" style="top: 40px; right: 0; min-width: 200px; z-index: 1050;">
+      <ul class="navbar-nav flex-column bg-white border rounded shadow p-2">
+        <li class="nav-item">
+          <a class="nav-link" href="#">Active Link</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="#">Link</a>
+        </li>
+        <li class="nav-item dropdown">
+          <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-expanded="false">
+            Dropdown
+          </a>
+          <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+            <a class="dropdown-item" href="#">Action</a>
+            <a class="dropdown-item" href="#">Another action</a>
+            <div class="dropdown-divider"></div>
+            <a class="dropdown-item" href="#">Something else here</a>
+          </div>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link disabled" href="#">Disabled</a>
+        </li>
+        <li class="nav-item mt-2">
+          <form class="form-inline">
+            <input class="form-control mr-2" type="search" placeholder="Search" aria-label="Search" />
+            <button class="btn btn-outline-success" type="submit">Search</button>
+          </form>
+        </li>
+      </ul>
+    </div>
+  </div>
+</nav>
+
+<!-- JS Scripts -->
+<script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"></script>
+
+<script>
+  $(document).ready(function () {
+    const $toggleBtn = $('#menuToggleBtn');
+    const $menu = $('#navbarSupportedContent_unique');
+
+    $toggleBtn.on('click', function (e) {
+      e.stopPropagation(); // prevent immediate document close
+      $menu.collapse('toggle');
+    });
+
+    // Hide menu when clicking outside
+    $(document).on('click', function (e) {
+      if (!$(e.target).closest('#navbarSupportedContent_unique, #menuToggleBtn').length) {
+        $menu.collapse('hide');
+      }
+    });
+  });
+</script>
+
+</body>
+</html>
