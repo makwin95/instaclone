@@ -11,6 +11,7 @@ Rails.application.routes.draw do
   get 'home/about'
   get 'posts/myposts'
   resources :posts
+  resources :comments
 
   get 'up' => 'rails/health#show', as: :rails_health_check
 
