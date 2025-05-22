@@ -1,0 +1,15 @@
+<%= stylesheet_link_tag 'post' %>
+<p style="color: green"><%= notice %></p>
+<div id="posts" class="text-center">
+  <% if @posts.present? %>
+    <% @posts.each do |post| %>
+      <% if post.user.id == current_user.id %>
+        <%= render post %>
+      <% end %>
+    <% end %>
+  <% else %>
+    <p>No posts found.</p>
+  <% end %>
+</div>
+
+<%= link_to "New post", new_post_path %>

@@ -3,6 +3,10 @@
   <%= form_with(model: post) do |form| %>
     <h1>New post</h1>
 
+    <div>
+      <%= form.text_field :user_id, type: "hidden", value: current_user.id %>
+    </div>
+
     <!-- Title Field -->
     <div>
       <% invalid_fields = post.errors.include?(:title) %>
