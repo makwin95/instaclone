@@ -20,11 +20,17 @@
     <div class="collapse position-absolute" id="navbarSupportedContent_unique" style="top: 40px; right: 0; min-width: 200px; z-index: 1050;">
       <ul class="navbar-nav flex-column bg-white border rounded shadow p-2">
         <li class="nav-item">
-          <a class="nav-link" href="#">Active Link</a>
+          <%= link_to 'Upload Post', new_post_path, class: 'nav-link' %>
         </li>
-        <li class="nav-item">
-          <a class="nav-link" href="#">Link2</a>
-        </li>
+        <%= if user_signed_in? %>
+          <li class="nav-item">
+            <%= link_to 'Sign out', destroy_user_session_path, class: 'nav-link', style:"border:none;" %>
+          </li>
+        <% else %>
+          <li class="nav-item">
+            <%= link_to 'Sign up', new_user_registration_path, class: 'nav-link', style:"border:none;" %>
+          </li>
+        <% end %>
         <li class="nav-item dropdown">
           <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-expanded="false">
             Dropdown
@@ -37,7 +43,7 @@
           </div>
         </li>
         <li class="nav-item">
-          <a class="nav-link disabled" href="#">Disabled</a>
+          <%= link_to 'About Page', home_about_path, class: 'nav-link' %>
         </li>
         <li class="nav-item mt-2">
           <form class="form-inline">

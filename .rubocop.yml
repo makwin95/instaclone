@@ -1,0 +1,18 @@
+AllCops:
+  Exclude:
+    - bin/*             # binstubs
+    - config/**/*       # configuration files
+    - db/schema.rb      # schema file
+    - db/migrate/**/*   # all migrations
+    - public/**/*       # if you have static files
+    - log/**/*          # log files
+    - lib/**/*          # library files
+    - tmp/**/*          # temporary files
+    - vendor/**/*       # if you have vendored code
+    
+
+Metrics/BlockLength:
+  Exclude:
+    - db/schema.rb
+    - db/migrate/**/*
+    
