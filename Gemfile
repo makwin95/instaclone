@@ -29,7 +29,7 @@ gem 'stimulus-rails'
 gem 'jbuilder'
 
 gem 'devise', '~> 4.9.0' # Authentication
-gem 'devise-jwt', '~> 0.8.0' # JWT authentication
+
 gem 'rubocop' # Code style checking
 gem 'rubocop-rails' # Code style checking for Rails
 
