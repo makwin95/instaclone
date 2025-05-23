@@ -9,6 +9,7 @@ class User < ApplicationRecord
          :recoverable, :rememberable, :validatable
   has_many :posts, dependent: :destroy
   has_many :comments, dependent: :destroy
+  has_one_attached :avatar
 
   before_create :randomize_id
 
@@ -17,7 +18,7 @@ class User < ApplicationRecord
   def randomize_id
     loop do
       self.id = SecureRandom.random_number(1_000_000_000)
-      break unless User.where(id: self.id).exists?
+      break unless User.where(id:).exists?
     end
   end
 end
