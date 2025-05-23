@@ -14,9 +14,13 @@
     <%= javascript_importmap_tags %>
   </head>
 
-  <body>
-  <%= render "layouts/navbar" %>
-    <%= yield %>
-  <%= render "layouts/footer" %>
+  <body class="d-flex flex-column min-vh-100">
+    <div class="d-flex flex-column flex-grow-1">
+      <%= render "layouts/navbar" %>
+      <main class="flex-grow-1">
+        <%= yield %>
+      </main>
+    </div>
+    <%= render "layouts/footer" %>
   </body>
 </html>

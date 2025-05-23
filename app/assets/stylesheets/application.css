@@ -13,3 +13,76 @@
  *= require_tree .
  *= require_self
  */
+/* Make avatar look better */
+ .avatar-item {
+  list-style: none;
+}
+
+
+/* Center avatar container without negative margin */
+.avatar-container {
+  display: flex;
+  justify-content: center;
+  margin-top: 20px; /* or 0 if preferred */
+  margin-bottom: 20px;
+}
+
+/* Style for avatar image */
+.avatar-img {
+  width: 150px;
+  height: 150px;
+  object-fit: cover; /* keep as cover for better cropping, or 'contain' if you want full image */
+  border-radius: 20%;
+  border: 4px solid white;
+  box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+  transition: transform 0.3s ease;
+}
+
+.avatar-img:hover {
+  transform: scale(1.05);
+}
+
+/* Style for user info box */
+.user-info {
+  text-align: center;
+  padding: 20px;
+  background-color: #fff;
+  border-radius: 10px;
+  box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+  margin: 20px auto;
+  max-width: 600px;
+}
+
+/* Style for avatar in navbar with hover effect */
+.avatar-hover {
+  transition: transform 0.3s ease;
+  display: inline-block; /* ensure transform works smoothly */
+}
+
+.avatar-hover:hover {
+  transform: scale(1.2); /* or whatever scale you prefer */
+}
+
+/* Style for the avatar item container */
+.navbar-avatar-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  list-style: none;
+}
+
+/* Style for the username to look modern and clean */
+.navbar-username {
+  margin-top: 6px;
+  font-family: 'Inter', sans-serif; /* use the imported font */
+  font-weight: 500; /* semi-bold for better visibility */
+  font-size: 0.85em;
+  color: #555; /* softer color */
+  letter-spacing: 0.5px;
+}
+
+.navbar-username:hover {
+  color: #000; /* darker on hover */
+  cursor: pointer;
+}
+
