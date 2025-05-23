@@ -30,6 +30,7 @@ gem 'jbuilder'
 
 gem 'devise', '~> 4.9.0' # Authentication
 
+gem 'image_processing', '~> 1.2' # Image processing
 gem 'rubocop' # Code style checking
 gem 'rubocop-rails' # Code style checking for Rails
 
