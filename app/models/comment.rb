@@ -2,6 +2,6 @@
 
 # This is a comment model that represents a comment on a post.
 class Comment < ApplicationRecord
-#   belongs_to :user
+  #   belongs_to :user
   belongs_to :post
 end

@@ -6,12 +6,15 @@ Rails.application.routes.draw do
     get 'users/password', to: 'devise/passwords#new'
     get 'users/sign_out', to: 'devise/sessions#destroy'
   end
-  devise_for :users
+  devise_for :users, controllers: {
+    registrations: 'user/registrations',
+  }
 
   get 'home/about'
   get 'posts/myposts'
   resources :posts
   resources :comments
+  resources :users, only: [:show]
 
   get 'up' => 'rails/health#show', as: :rails_health_check
 
