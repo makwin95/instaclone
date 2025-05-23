@@ -23,4 +23,9 @@
       <% end %>
     </div>
   <% end %>
+  <p>
+    <%= link_to post.user.email, post.user,
+    style: "z-index: 10; position: relative; pointer-events: auto; 
+    color: blue; text-decoration: underline;" %>
+  </p>
 </div>

@@ -1,0 +1,56 @@
+<div class="container py-5">
+  <div class="row justify-content-center mb-5">
+    <div class="col-md-3 text-center">
+      <% if @user.avatar.attached? %>
+        <%= image_tag @user.avatar, class: "avatar-img border", style: "" %>
+        <% else %>
+        <%= image_tag "default_avatar.png", class: "avatar-img border", style: "" %>
+      <% end %>
+    </div>
+
+    <div class="col-md-6">
+      <div class="d-flex align-items-center mb-2">
+        <h2 class="mr-3 mb-0"><%= @user.username %></h2>
+        <% if current_user == @user %>
+          <%= link_to "Edit Profile", edit_user_registration_path(@user), class: "btn btn-outline-secondary btn-sm ml-3" %>
+        <% end %>
+      </div>
+
+      <p class="text-muted mb-1"><strong>Email:</strong> <%= @user.email %></p>
+      <% if @user.bio.present? %>
+        <p class="mt-2"><%= @user.bio %></p>
+      <% end %>
+    </div>
+  </div>
+
+  <hr>
+
+  <!-- Add future content like posts, followers, etc. -->
+  <div class="row text-center">
+    <div class="col-md-4">
+      <h5 class="mb-1"><%= @user.posts.count %></h5>
+      <small class="text-muted">Posts</small>
+    </div>
+    <div class="col-md-4">
+      <h5 class="mb-1">0</h5>
+      <small class="text-muted">Followers</small>
+    </div>
+    <div class="col-md-4">
+      <h5 class="mb-1"><%= @user.comments.count %></h5>
+      <small class="text-muted">Comments</small>
+    </div>
+  </div>
+</div>
+
+
+<%= stylesheet_link_tag 'post' %>
+<p style="color: green"><%= notice %></p>
+<div id="posts" class="text-center">
+  <% if @user.posts.present? %>
+    <% @user.posts.each do |post| %>
+        <%= render post %>
+    <% end %>
+  <% else %>
+    <p>No posts found.</p>
+  <% end %>
+</div>
