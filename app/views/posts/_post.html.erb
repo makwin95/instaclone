@@ -23,6 +23,23 @@
       <% end %>
     </div>
   <% end %>
+
+  <% if user_signed_in? %>
+    <% like = current_user.likes.find_by(post_id: post.id) %>
+    <% if like.nil? %>
+      <%= button_to "Like", likes_path, params: { like: { post_id: post.id } },
+        method: :post, class: "btn btn-primary like-button",
+        style: "z-index: 10; position: relative; pointer-events: auto; color: blue;" %>
+    <% else %>
+      <%= button_to "Unlike", like_path(like), method: :delete,
+        class: "btn btn-secondary unlike-button",
+        style: "z-index: 10; position: relative; pointer-events: auto; color: red;" %>
+    <% end %>
+  <% end %>
+  <p>
+    <strong>Likes:</strong> <%= post.likes.count %>
+  </p>
+    
   <p>
     <%= link_to post.user.email, post.user,
     style: "z-index: 10; position: relative; pointer-events: auto; 
