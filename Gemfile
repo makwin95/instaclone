@@ -29,7 +29,7 @@ gem 'stimulus-rails'
 gem 'jbuilder'
 
 gem 'devise', '~> 4.9.0' # Authentication
-
+gem 'followability', github: 'nejdetkadir/followability', branch: 'main' # Follow system
 gem 'image_processing', '~> 1.2' # Image processing
 gem 'rubocop' # Code style checking
 gem 'rubocop-rails' # Code style checking for Rails
