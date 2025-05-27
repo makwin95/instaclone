@@ -2,21 +2,31 @@
   <div class="row justify-content-center mb-5">
     <div class="col-md-3 text-center">
       <% if @user.avatar.attached? %>
-        <%= image_tag @user.avatar, class: "avatar-img border", style: "" %>
-        <% else %>
-        <%= image_tag "default_avatar.png", class: "avatar-img border", style: "" %>
+        <%= image_tag @user.avatar, class: "avatar-img border" %>
+      <% else %>
+        <%= image_tag "default_avatar.png", class: "avatar-img border" %>
       <% end %>
     </div>
 
     <div class="col-md-6">
+      <!-- Username and follow button row -->
       <div class="d-flex align-items-center mb-2">
         <h2 class="mr-3 mb-0"><%= @user.username %></h2>
-        <% if current_user == @user %>
-          <%= link_to "Edit Profile", edit_user_registration_path(@user), class: "btn btn-outline-secondary btn-sm ml-3" %>
+        <% if current_user != @user %>
+          <% if current_user.following?(@user) %>
+            <%= button_to "Unfollow", unfollow_path(@user), method: :post, class: "btn btn-danger btn-sm ml-3" %>
+          <% elsif current_user.sent_follow_request_to?(@user) %>
+            <%= button_to "Cancel follow request", cancel_path(@user), method: :post, class: "btn btn-warning btn-sm ml-3" %>
+          <% else %>
+            <%= button_to "Follow", follow_path(@user), method: :post, class: "btn btn-primary btn-sm ml-3" %>
+          <% end %>
         <% end %>
       </div>
 
+      <!-- Email -->
       <p class="text-muted mb-1"><strong>Email:</strong> <%= @user.email %></p>
+
+      <!-- Bio -->
       <% if @user.bio.present? %>
         <p class="mt-2"><%= @user.bio %></p>
       <% end %>
@@ -25,14 +35,51 @@
 
   <hr>
 
-  <!-- Add future content like posts, followers, etc. -->
-  <div class="row text-center">
+  <!-- Follow requests -->
+  <% current_user.follow_requests.each do |request| %>
+    <div class="mb-2">
+      <%= request.followerable.email %> Wants to follow you.
+      <%= button_to "Accept", accept_follow_request_path(request), method: :post, class: "btn btn-success btn-sm mr-2" %>
+      <%= button_to "Decline", decline_follow_request_path(request), method: :post, class: "btn btn-danger btn-sm" %>
+    </div>
+  <% end %>
+
+  <!-- Followers list -->
+  <h4>Followers</h4>
+  <% @user.followers.each do |follower| %>
+    <div class="d-flex align-items-center mb-2">
+      <%= link_to follower.email, follower, class: "mr-3" %>
+      <% unless follower == current_user %>
+        <%= button_to (current_user.following?(follower) ? "Unfollow" : "Follow"),
+                       (current_user.following?(follower) ? unfollow_path(follower) : follow_path(follower)),
+                       method: :post,
+                       class: "btn btn-sm #{current_user.following?(follower) ? 'btn-danger' : 'btn-primary'}" %>
+      <% end %>
+    </div>
+  <% end %>
+
+  <!-- Following list -->
+  <h4>Following</h4>
+  <% @user.following.each do |following_user| %>
+    <div class="d-flex align-items-center mb-2">
+      <%= link_to following_user.email, following_user, class: "mr-3" %>
+      <% unless following_user == current_user %>
+        <%= button_to (current_user.following?(following_user) ? "Unfollow" : "Follow"),
+                       (current_user.following?(following_user) ? unfollow_path(following_user) : follow_path(following_user)),
+                       method: :post,
+                       class: "btn btn-sm #{current_user.following?(following_user) ? 'btn-danger' : 'btn-primary'}" %>
+      <% end %>
+    </div>
+  <% end %>
+
+  <!-- Stats -->
+  <div class="row text-center mt-4">
     <div class="col-md-4">
       <h5 class="mb-1"><%= @user.posts.count %></h5>
       <small class="text-muted">Posts</small>
     </div>
     <div class="col-md-4">
-      <h5 class="mb-1">0</h5>
+      <h5 class="mb-1"><%= @user.followers.count %></h5>
       <small class="text-muted">Followers</small>
     </div>
     <div class="col-md-4">
@@ -40,15 +87,16 @@
       <small class="text-muted">Comments</small>
     </div>
   </div>
+
 </div>
 
-
+<!-- Posts Section -->
 <%= stylesheet_link_tag 'post' %>
 <p style="color: green"><%= notice %></p>
 <div id="posts" class="text-center">
   <% if @user.posts.present? %>
     <% @user.posts.each do |post| %>
-        <%= render post %>
+      <%= render post %>
     <% end %>
   <% else %>
     <p>No posts found.</p>

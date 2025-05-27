@@ -7,7 +7,7 @@ Rails.application.routes.draw do
     get 'users/sign_out', to: 'devise/sessions#destroy'
   end
   devise_for :users, controllers: {
-    registrations: 'user/registrations',
+    registrations: 'users/registrations',
   }
 
   get 'home/about'
@@ -16,6 +16,12 @@ Rails.application.routes.draw do
   resources :comments
   resources :users, only: [:show]
   resources :likes, only: [:create, :destroy]
+
+  post 'users/:id/follow', to: 'users#follow', as: 'follow'
+  post 'users/:id/unfollow', to: 'users#unfollow', as: 'unfollow'
+  post 'users/:id/accept', to: 'users#accept', as: 'accept'
+  post 'users/:id/decline', to: 'users#decline', as: 'decline'
+  post 'users/:id/cancel', to: 'users#cancel', as: 'cancel'
 
   get 'up' => 'rails/health#show', as: :rails_health_check
 

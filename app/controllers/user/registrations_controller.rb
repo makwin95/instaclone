@@ -4,7 +4,7 @@
 # It includes user registration, account management, and profile viewing.
 # Each controller is responsible for handling specific user-related actions.
 # The controllers inherit from Devise::RegistrationsController and ApplicationController.
-module User
+module Users
   # This controller handles user registration and account management.
   class RegistrationsController < Devise::RegistrationsController
     before_action :configure_sign_up_params, only: [:create]
