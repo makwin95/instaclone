@@ -15,6 +15,7 @@ Rails.application.routes.draw do
   resources :posts
   resources :comments
   resources :users, only: [:show]
+  resources :likes, only: [:create, :destroy]
 
   get 'up' => 'rails/health#show', as: :rails_health_check
 
