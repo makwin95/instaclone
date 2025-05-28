@@ -1,48 +1,96 @@
-<div id="<%= dom_id post %>" class="post-container">
-  <p>
-    <%= post.title %>
-  </p>
-
-  <p>
-    <%= post.description %>
-  </p>
-
-  <p>
-    <%= post.keywords %>
-  </p>
-
-  <p>
-    <%= link_to "", post, class: "post-link" %>
-  </p>
+<div id="<%= dom_id post %>" class="post-card">
+  <div class="post-header">
+    <% if post.user.avatar.attached? %>
+      <%= link_to image_tag(post.user.avatar, class: "post-avatar"), user_path(post.user) %>
+    <% else %>
+      <%= link_to image_tag("default_avatar.png", class: "post-avatar"), user_path(post.user) %>
+    <% end %>
+    <div>
+      <%= link_to post.user.username, user_path(post.user), class: "post-username" %><br>
+      <span class="post-time"><%= time_ago_in_words(post.created_at) %> ago</span>
+    </div>
+  </div>
 
   <% if post.images.attached? %>
-    <div class="images-container">
-      <% post.images.each do |image| %>
-        <%= image_tag image,
-          class: "post-image" %>
+    <div class="carousel-container">
+      <% post.images.each_with_index do |image, index| %>
+        <%= image_tag image, class: "post-img #{'active' if index == 0}", data: { index: index } %>
       <% end %>
+      <div class="carousel-controls">
+        <button class="prev">‹</button>
+        <button class="next">›</button>
+      </div>
     </div>
   <% end %>
 
-  <% if user_signed_in? %>
-    <% like = current_user.likes.find_by(post_id: post.id) %>
-    <% if like.nil? %>
-      <%= button_to "Like", likes_path, params: { like: { post_id: post.id } },
-        method: :post, class: "btn btn-primary like-button",
-        style: "z-index: 10; position: relative; pointer-events: auto; color: blue;" %>
-    <% else %>
-      <%= button_to "Unlike", like_path(like), method: :delete,
-        class: "btn btn-secondary unlike-button",
-        style: "z-index: 10; position: relative; pointer-events: auto; color: red;" %>
+  <div class="post-content">
+    <p class="post-title"><%= post.title %></p>
+    <p class="post-description"><%= post.description %></p>
+    <p class="post-keywords">#<%= post.keywords&.split(',')&.join(' #') %></p>
+
+    <div class="post-actions">
+      <% if user_signed_in? %>
+        <% like = current_user.likes.find_by(post_id: post.id) %>
+        <% if like.nil? %>
+          <%= button_to likes_path, params: { like: { post_id: post.id } },
+              method: :post, class: "like-btn" do %>
+            🤍
+          <% end %>
+        <% else %>
+          <%= button_to like_path(like), method: :delete, class: "like-btn liked" do %>
+            ❤️
+          <% end %>
+        <% end %>
+      <% end %>
+
+      <span class="likes-count"><%= post.likes.count %> likes</span>
+    </div>
+
+    <div class="post-comments">
+      <% post.comments.each do |comment| %>
+        <p><strong><%= comment.user.username %>:</strong> <%= comment.text %></p>
+      <% end %>
+    </div>
+
+    <% if user_signed_in? %>
+      <%= form_with(model: [post, Comment.new], local: true, class: "comment-form") do |form| %>
+        <%= form.text_field :text, placeholder: "Add a comment...", class: "comment-input" %>
+        <%= form.submit "Post", class: "comment-submit" %>
+      <% end %>
     <% end %>
-  <% end %>
-  <p>
-    <strong>Likes:</strong> <%= post.likes.count %>
-  </p>
-    
-  <p>
-    <%= link_to post.user.email, post.user,
-    style: "z-index: 10; position: relative; pointer-events: auto; 
-    color: blue; text-decoration: underline;" %>
-  </p>
+  </div>
 </div>
+
+<script>
+document.addEventListener("DOMContentLoaded", () => {
+  document.querySelectorAll(".carousel-container").forEach((carousel) => {
+    const images = carousel.querySelectorAll(".post-img");
+    let current = 0;
+
+    const showImage = (index) => {
+      images.forEach((img, i) => {
+        img.classList.toggle("active", i === index);
+      });
+    };
+
+    const prev = () => {
+      current = (current - 1 + images.length) % images.length;
+      showImage(current);
+    };
+
+    const next = () => {
+      current = (current + 1) % images.length;
+      showImage(current);
+    };
+
+    const prevBtn = carousel.querySelector(".prev");
+    const nextBtn = carousel.querySelector(".next");
+    if (prevBtn && nextBtn) {
+      prevBtn.addEventListener("click", prev);
+      nextBtn.addEventListener("click", next);
+    }
+
+    showImage(current);
+  });
+});
+</script>
