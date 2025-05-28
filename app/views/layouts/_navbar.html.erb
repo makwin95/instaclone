@@ -34,6 +34,13 @@
   <!-- Centered Home link -->
   <a class="navbar-brand mx-auto text-center font-weight-bold" href="/">Instaclone</a>
 
+  <!-- Search field -->
+  <div class="d-flex align-items-center" style="position: absolute; margin-left: 100px;">
+  <%= form_with url: profiles_index_path, method: :get, local: true, html: { class: 'd-flex align-items-center', style: 'width: 200px;' } do |form| %>
+    <%= form.search_field :query, value: params[:query], placeholder: 'Search', aria: { label: 'Search' }, class: 'search-input', style: 'width: 100%;' %>
+  <% end %>
+</div>
+
   <!-- Menu toggle button and menu -->
   <div class="d-flex align-items-start position-relative">
     <button class="navbar-toggler" id="menuToggleBtn" type="button" aria-label="Toggle menu">
@@ -65,12 +72,6 @@
         <% end %>
         <li class="nav-item">
           <%= link_to 'About Page', home_about_path, class: 'nav-link' %>
-        </li>
-        <li class="nav-item mt-2">
-          <form class="form-inline">
-            <input class="form-control mr-2" type="search" placeholder="Search" aria-label="Search" />
-            <button class="btn btn-outline-success" type="submit">Search</button>
-          </form>
         </li>
       </ul>
     </div>

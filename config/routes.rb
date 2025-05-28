@@ -12,8 +12,12 @@ Rails.application.routes.draw do
 
   get 'home/about'
   get 'posts/myposts'
+  get 'profiles/index'
   resources :posts
   resources :comments
+  resources :posts do
+    resources :comments, only: [:create]
+  end
   resources :users, only: [:show]
   resources :likes, only: [:create, :destroy]
 

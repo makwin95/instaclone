@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.1].define(version: 2025_05_27_012715) do
+ActiveRecord::Schema[7.1].define(version: 2025_05_28_030323) do
   create_table "active_storage_attachments", force: :cascade do |t|
     t.string "name", null: false
     t.string "record_type", null: false
@@ -41,10 +41,10 @@ ActiveRecord::Schema[7.1].define(version: 2025_05_27_012715) do
 
   create_table "comments", force: :cascade do |t|
     t.string "text"
-    t.string "user_id"
-    t.string "post_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.bigint "user_id", null: false
+    t.bigint "post_id", null: false
   end
 
   create_table "followability_relationships", force: :cascade do |t|
@@ -75,7 +75,7 @@ ActiveRecord::Schema[7.1].define(version: 2025_05_27_012715) do
     t.string "keywords"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.string "user_id"
+    t.bigint "user_id", null: false
   end
 
   create_table "users", force: :cascade do |t|
@@ -94,6 +94,9 @@ ActiveRecord::Schema[7.1].define(version: 2025_05_27_012715) do
 
   add_foreign_key "active_storage_attachments", "active_storage_blobs", column: "blob_id"
   add_foreign_key "active_storage_variant_records", "active_storage_blobs", column: "blob_id"
+  add_foreign_key "comments", "posts"
+  add_foreign_key "comments", "users"
   add_foreign_key "likes", "posts"
   add_foreign_key "likes", "users"
+  add_foreign_key "posts", "users"
 end
