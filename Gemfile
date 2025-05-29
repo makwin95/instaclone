@@ -28,9 +28,11 @@ gem 'stimulus-rails'
 # Build JSON APIs with ease [https://github.com/rails/jbuilder]
 gem 'jbuilder'
 
+gem 'cssbundling-rails' # CSS bundling for Rails
 gem 'devise', '~> 4.9.0' # Authentication
 gem 'followability', github: 'nejdetkadir/followability', branch: 'main' # Follow system
 gem 'image_processing', '~> 1.2' # Image processing
+gem 'rails_admin' # Admin interface
 gem 'ransack' # Search and sort functionality
 gem 'rubocop' # Code style checking
 gem 'rubocop-rails' # Code style checking for Rails
