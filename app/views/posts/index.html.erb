@@ -1,13 +1,65 @@
-<% stylesheet_link_tag('post') %>
+<%= stylesheet_link_tag 'post' %>
 
 <p style="color: green"><%= notice %></p>
 
 <div class="feed-container">
-  <% if @posts.any? %>
-    <% @posts.each do |post| %>
+  <% if user_signed_in? %>
+    <% 
+      # Постів підписаних користувачів (без власних постів)
+      followed_posts = @posts.select do |post| 
+        current_user.following?(post.user) && post.user_id != current_user.id
+      end
+
+      # Постів від підписаних, що не повторюються
+      used_post_ids = followed_posts.map(&:id)
+
+      # Випадкові пості за останній тиждень, що не входять до підписаних і не є власними
+      other_posts = Post.where.not(id: used_post_ids)
+                        .where("created_at >= ?", 1.week.ago)
+                        .where.not(user_id: current_user.id)
+                        .order("RANDOM()")
+                        .limit(20)
+
+      combined_posts = []
+
+      if followed_posts.any?
+        followed_posts.each_with_index do |post, index|
+          combined_posts << post
+          if (index + 1) % 3 == 0
+            # Вставляємо рандомний пост, якщо він є
+            sample_post = other_posts.sample
+            if sample_post && !used_post_ids.include?(sample_post.id)
+              combined_posts << sample_post
+              used_post_ids << sample_post.id
+              # Виключаємо з подальшого використання
+              other_posts = other_posts.where.not(id: sample_post.id)
+            end
+          end
+        end
+        # Додаємо залишки з інших постів
+        remaining_posts = other_posts.where.not(id: combined_posts.map(&:id))
+        combined_posts += remaining_posts
+      else
+        # Якщо підписаних немає, показуємо тільки випадкові, не власні
+        random_posts = Post.where("created_at >= ?", 1.week.ago)
+                           .where.not(user_id: current_user.id)
+                           .order("RANDOM()")
+                           .limit(20)
+        combined_posts = random_posts
+      end
+    %>
+
+    <% combined_posts.uniq.each do |post| %>
       <%= render post %>
     <% end %>
+
   <% else %>
-    <div class="no-posts-found">No posts found.</div>
+    <%# Якщо не залогінений, показуємо тільки випадкові пости за останній тиждень без фільтрації по user_id %>
+    <% random_posts = Post.where("created_at >= ?", 1.week.ago)
+                          .order("RANDOM()")
+                          .limit(20) %>
+    <% random_posts.each do |post| %>
+      <%= render post %>
+    <% end %>
   <% end %>
 </div>
