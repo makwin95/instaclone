@@ -69,7 +69,7 @@
           <% if current_user.admin? %>
             <%= link_to 'Admin Dashboard', rails_admin_path, class: 'nav-link' %>
           <% end %>
-        </li>
+          </li>
         <% else %>
           <li class="nav-item">
             <%= link_to 'Sign up', new_user_registration_path, class: 'nav-link', style:"border:none;" %>
